@@ -1,0 +1,36 @@
+@import "./common"
+#contentContainer
+  width CONTENT_WIDTH
+  margin HEADER_HEIGHT + SPACING_VALUE auto 20px auto
+  .waterfalls
+    width CONTENT_WIDTH - 10
+    margin auto
+    padding 5px 0
+    overflow hidden
+    .waterfall
+      width 25%
+      float left
+      .waterfallItem
+        margin-right 15px
+        .novelContainer
+          padding 10px
+          padding-top 5px
+          background-color white
+          box-shadow 0 1px 3px rgba(34, 25, 25, 0.4)
+          margin-bottom 15px
+          .title
+            font-size 20px
+            line-height 32px
+            a
+              color #0e0e0e
+          .novelInfo 
+            overflow hidden
+            .novelArchor
+              display block
+              float left
+              .frontcover
+                display block
+                width 100px
+                margin 0 5px 5px 0
+            .novelInfo
+              width 100%

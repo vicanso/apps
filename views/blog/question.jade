@@ -1,0 +1,32 @@
+include ./mixins
+
+extends ./layout
+block bodyContainer
+  include ./header
+  - fileImporter.importJs(['/common/codemirror/codemirror.min.js', '/common/codemirror/javascript.min.js', '/common/javascripts/utils/markdown.min.js', '/common/javascripts/utils/highlight.min.js']);
+  - fileImporter.importCss(['/common/codemirror/codemirror.css', '/common/codemirror/monokai.css', '/common/stylesheets/monokai.styl']);
+  - fileImporter.importCss(['/blog/stylesheets/questionitem.styl']);
+  - fileImporter.importJs('/blog/javascripts/question.coffee')
+  #contentContainer
+    #slideBar
+      include ./about
+      include ./recommendations
+      include ./utils
+    #leftContainer
+      - var question = viewData.question;
+      if question
+        .questionContainer
+          mixin question(question)
+        - var comments = question.comments;
+        if comments
+          .comments
+            h3.title Comments(共#{comments.length}条)
+            each comment in comments
+              mixin comment(comment)
+
+      .replyContainer
+        .author
+        .replyContent
+        .preview
+          .content
+

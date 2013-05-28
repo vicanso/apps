@@ -1,0 +1,9 @@
+include ./mixins
+extends ./layout
+block bodyContainer
+  include ./header
+  - fileImporter.importCss(['/blog/stylesheets/article.styl', '/blog/stylesheets/articleitem.styl', '/common/stylesheets/monokai.styl']);
+  #contentContainer
+    - var article = viewData.article;
+    .articleContainer
+      mixin article(article)

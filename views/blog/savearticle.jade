@@ -1,0 +1,34 @@
+extends ./layout
+block bodyContainer
+  include ./header
+  - fileImporter.importJs(['/common/codemirror/codemirror.min.js', '/common/codemirror/javascript.min.js', '/common/javascripts/utils/markdown.min.js', '/common/javascripts/utils/highlight.min.js']);
+  - fileImporter.importCss(['/common/codemirror/codemirror.css', '/common/codemirror/monokai.css', '/common/stylesheets/monokai.styl'])
+  - fileImporter.importCss(['/blog/stylesheets/article.styl', '/blog/stylesheets/savearticle.styl']);
+  - fileImporter.importJs('/blog/javascripts/savearticle.coffee');
+  if viewData.doc
+    script(type="text/javascript")
+      var ARTICLE = !{JSON.stringify(viewData.doc)};
+  #contentContainer
+    .preview
+      .article
+        .author 谢树洲Tree(vicansocanbico@gmail.com)
+          span.createTime 2013.03.01
+          img(src='http://tp1.sinaimg.cn/2398226332/50/5660016074/1')
+        h3.title 
+          a(href='#') 
+        .content
+
+        .behaviorBtns
+          a.readmore.btn(href='javascript:;') readmore...
+    .editContainer
+      .tags.btn-group
+        a.btn(href='javascript:;') node
+        a.btn(href='javascript:;') javascript
+        a.btn(href='javascript:;') jQuery
+        a.btn(href='javascript:;') web前端
+        a.btn(href='javascript:;') others
+      .btn-group.controlBtns
+        a.btn(href='javascript:;') 标题
+        a.btn(href='javascript:;') 内容
+        a.btn.saveBtn(href='javascript:;') 保存
+      .articleContent

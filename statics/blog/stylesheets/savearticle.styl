@@ -1,0 +1,22 @@
+@import './common'
+@import '../../common/stylesheets/mixins/vicanso'
+#contentContainer
+  margin HEADER_HEIGHT + SPACING_VALUE auto auto
+  .editContainer
+    float left
+    width 50%
+    .controlBtns, .tags
+      margin 10px
+      overflow hidden
+      .btn
+        &.selected
+          color red
+    .articleContent
+      margin 0 10px
+      .userTextArea
+        width 100%
+      .CodeMirror
+        margin-bottom 20px
+  .preview
+    float right
+    width 50%

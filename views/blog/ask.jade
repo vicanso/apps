@@ -1,0 +1,34 @@
+include ./mixins
+
+extends ./layout
+block bodyContainer
+  include ./header
+  - fileImporter.importJs(['/common/codemirror/codemirror.min.js', '/common/codemirror/javascript.min.js', '/common/javascripts/utils/markdown.min.js', '/common/javascripts/utils/highlight.min.js']);
+  - fileImporter.importCss(['/common/codemirror/codemirror.css', '/common/codemirror/monokai.css', '/common/stylesheets/monokai.styl'])
+  - fileImporter.importCss(['/blog/stylesheets/article.styl', '/blog/stylesheets/ask.styl']);
+  - fileImporter.importJs('/blog/javascripts/ask.coffee')
+  #contentContainer
+    .editor
+      .title
+        span.tip 标题：
+        input(type='text', placeholder='请输入你的技术问题？')
+      .tags
+        span.tip 分类：
+        a.btn(href='javascript:;') node
+        a.btn(href='javascript:;') javascript
+        a.btn(href='javascript:;') jQuery
+        a.btn(href='javascript:;') node
+        a.btn(href='javascript:;') others
+      .ctrlBtn
+        a.btn.submit(href='javascript:;') 保存
+        a.btn.example(href='javascript:;') 示例(markdown)
+      h3 请详细描述你的问题，最好带上代码（请使用markdown编写，右侧为预览效果图，定时刷新）：
+      textarea.content
+    .preview
+      .article
+        .author
+          span.createTime #{viewData.createdAt}
+          img(src='')
+        .info
+          a.title(href='javascript:;') 
+        .content

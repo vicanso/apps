@@ -1,0 +1,17 @@
+include ./mixins
+
+extends ./layout
+block bodyContainer
+  include ./header
+  - fileImporter.importCss(['/blog/stylesheets/index.styl']);
+  - fileImporter.importJs('/blog/javascripts/index.coffee')
+  #contentContainer
+    #slideBar
+      include ./about
+      include ./recommendations
+      include ./utils
+    - var articles = viewData.articles;
+    if articles
+      .articles
+        each article in articles
+          mixin article(article)
