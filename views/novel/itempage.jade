@@ -1,7 +1,7 @@
 extends ./layout
 block bodyContainer
   include ./header
-  - fileImporter.importCss(['/statics/novel/stylesheets/itempage.styl']);
+  - fileImporter.importCss(['/novel/stylesheets/itempage.styl']);
   #contentContainer
     h1.title #{viewData.title}
     .controlBtns

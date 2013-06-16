@@ -1,31 +1,31 @@
-appConfig = require '../config'
-appPath = appConfig.getAppPath()
+config = require '../config'
+appPath = config.getAppPath()
 pageContentHandler = require "#{appPath}/helpers/pagecontenthandler"
 
-staticsHost = appConfig.getStaticsHost()
+staticsHost = config.getStaticsHost()
 
 routeInfos = [
   {
-    route : ['/xiaoshuo', '/xiaoshuo/page/:page', '/xiaoshuo/type/:type', '/xiaoshuo/type/:type/page/:page']
-    jadeView : 'novel/index'
+    route : ['/xs', '/xs/page/:page', '/xs/type/:type', '/xs/type/:type/page/:page']
+    template : 'novel/index'
     staticsHost : staticsHost
-    handleFunc : pageContentHandler.index
+    handler : pageContentHandler.index
   }
   {
-    route : '/xiaoshuo/item/:id'
-    jadeView : 'novel/item'
+    route : '/xs/item/:id'
+    template : 'novel/item'
     staticsHost : staticsHost
-    handleFunc : pageContentHandler.item
+    handler : pageContentHandler.item
   }
   {
-    route : '/xiaoshuo/item/:id/page/:page'
-    jadeView : 'novel/itempage'
+    route : '/xs/item/:id/page/:page'
+    template : 'novel/itempage'
     staticsHost : staticsHost
-    handleFunc : pageContentHandler.itemPage
+    handler : pageContentHandler.itemPage
   }
   {
-    route : '/xiaoshuo/getnovel/:id'
-    handleFunc : pageContentHandler.getNovel
+    route : '/xs/getnovel/:id'
+    handler : pageContentHandler.getNovel
   }
 ]
 

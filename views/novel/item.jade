@@ -1,7 +1,7 @@
 extends ./layout
 block bodyContainer
   include ./header
-  - fileImporter.importCss(['/statics/novel/stylesheets/item.styl']);
+  - fileImporter.importCss(['/novel/stylesheets/item.styl']);
   #contentContainer
     - var novel = viewData.novel;
     - var baseUrl = viewData.baseUrl;

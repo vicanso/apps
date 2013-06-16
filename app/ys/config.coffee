@@ -35,7 +35,6 @@ config =
 
   middleware : ->
     (req, res, next) ->
-      console.dir '.....'
       if req.host == setting.host
         req.url = "/ys#{req.url}"
         req.originalUrl = req.url
@@ -51,43 +50,3 @@ config =
       _sessionParser = parser
 
 module.exports = config
-
-# _ = require 'underscore'
-
-# setting = require './setting.json'
-
-# init = ->
-#   jtWeb = require 'jtweb'
-#   appName = SETTING.appName
-#   jtWeb.addInfoParser (req) ->
-#     if req.host == SETTING.host
-#       {
-#         appName : appName
-#       }
-#     else
-#       null
-#   redisOptions =
-#     ttl : 60 * 60
-#   jtWeb.addSessionConfig appName, redisOptions, {
-#     key : appName
-#   }
-
-# config = 
-#   getAppPath : () ->
-#     __dirname
-#   isProductionMode : () ->
-#     process.env.NODE_ENV == 'production'
-#   getStaticsHost : () ->
-#     if @isProductionMode()
-#       'http://jennyou.com'
-#     else
-#       null
-#   getMongoDbConfig : () ->
-#     SETTING.mongoDb
-#   init : init
-#   getAppConfig : () ->
-#     {
-#       routeInfos : require './routes'
-#     }
-     
-# module.exports = config

@@ -1,7 +1,7 @@
 extends ./layout
 block bodyContainer
   include ./header
-  - fileImporter.importCss(['/statics/novel/stylesheets/index.styl']);
+  - fileImporter.importCss(['/novel/stylesheets/index.styl']);
   #contentContainer
     - var novelsList = viewData.novelsList;
     .waterfalls
@@ -14,7 +14,7 @@ block bodyContainer
                   a.novelArchor(href='/item/#{novel.bookId}', target='_blank') #{novel.name}
                 .novelInfo
                   a.novelArchor(href='/item/#{novel.bookId}', target='_blank')
-                    img.frontcover(src='/statics/#{encodeURI(novel.author)}_#{encodeURI(novel.name)}.jpg')
+                    img.frontcover(src='/static/#{encodeURI(novel.author)}_#{encodeURI(novel.name)}.jpg')
                     //- img.frontcover(src='/statics/novel/frontcover/#{encodeURI(novel.name)}.jpg')
                   p.desc #{novel.desc}
     include pagebuttonset

@@ -19,7 +19,7 @@ slaveHandler = ->
         ['/common/javascripts/utils/underscore.min.js', '/common/javascripts/utils/async.min.js']
       ]
       mount : '/static'
-    launch : ['blog', 'ys']
+    launch : ['blog', 'ys', 'novel']
     favicon : ''
     apps : "#{__dirname}/app"
     port : 10000
@@ -29,7 +29,6 @@ slaveHandler = ->
 
 if process.env.NODE_ENV == 'production'
   jtCluster.start {
-    slaveTotal : 1
     slaveHandler : slaveHandler
   }
 else
