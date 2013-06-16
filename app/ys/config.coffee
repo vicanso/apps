@@ -35,6 +35,7 @@ config =
 
   middleware : ->
     (req, res, next) ->
+      console.dir '.....'
       if req.host == setting.host
         req.url = "/ys#{req.url}"
         req.originalUrl = req.url

@@ -76,10 +76,10 @@ routeInfos = [
   #   route : '/mergeajax'
   #   handler : pageContentHandler.mergeAjax
   # }
-  {
-    route : '/ys'
-    handler : (req, res) ->
-      res.redirect 'http://ys.jennyou.com'
-  }
+  # {
+  #   route : '/ys'
+  #   handler : (req, res) ->
+  #     res.redirect 'http://ys.jennyou.com'
+  # }
 ]
 module.exports = routeInfos

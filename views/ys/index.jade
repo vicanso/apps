@@ -1,8 +1,8 @@
 extends ./baselayout
 block bodyContainer
   include ./header
-  - fileImporter.importCss(['/statics/ys/stylesheets/index.styl']);
-  - fileImporter.importJs(['/statics/ys/javascripts/index.coffee']);
+  - fileImporter.importCss(['/ys/stylesheets/index.styl']);
+  - fileImporter.importJs(['/ys/javascripts/index.coffee']);
   #contentContainer
     include ./waterfall
     include ./pagebuttonset

@@ -1,8 +1,8 @@
 extends ./layout
 block bodyContainer
   include ./header
-  - fileImporter.importCss(['/statics/ys/stylesheets/item.styl', '/statics/ys/stylesheets/querypage.styl']);
-  - fileImporter.importJs(['/statics/ys/javascripts/item.coffee', '/statics/ys/javascripts/querypage.coffee'])
+  - fileImporter.importCss(['/ys/stylesheets/item.styl', '/ys/stylesheets/querypage.styl']);
+  - fileImporter.importJs(['/ys/javascripts/item.coffee', '/ys/javascripts/querypage.coffee'])
   #contentContainer.notPrint
     #queryPageContainer
       .info

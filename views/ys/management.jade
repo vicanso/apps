@@ -1,8 +1,8 @@
 extends ./layout
 block bodyContainer
   include ./header
-  - fileImporter.importCss(['/statics/ys/stylesheets/management.styl']);
-  - fileImporter.importJs(['/statics/ys/javascripts/management.coffee'])
+  - fileImporter.importCss(['/ys/stylesheets/management.styl']);
+  - fileImporter.importJs(['/ys/javascripts/management.coffee'])
   #contentContainer.notPrint
     .functions
       a.btn.btnPrimary.function.sell(href='/sell', target='_blank') 销售管理

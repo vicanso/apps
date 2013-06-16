@@ -7,37 +7,37 @@ staticsHost = config.getStaticsHost()
 routeInfos = [
   {
     route : ['/ys/', '/ys/page/:page']
-    jadeView : 'ys/index'
+    template : 'ys/index'
     staticsHost : staticsHost
     handler : pageContentHandler.index
   }
   {
     route : '/ys/management'
-    jadeView : 'ys/management'
+    template : 'ys/management'
     staticsHost : staticsHost
     handler : pageContentHandler.management
   }
   {
     route : ['/ys/sell', '/ys/sell/:id']
-    jadeView : 'ys/sell'
+    template : 'ys/sell'
     staticsHost : staticsHost
     handler : pageContentHandler.sell
   }
   {
     route : '/ys/buy'
-    jadeView : 'ys/buy'
+    template : 'ys/buy'
     staticsHost : staticsHost
     handler : pageContentHandler.buy
   }
   {
     route : '/ys/transfer'
-    jadeView : 'ys/transfer'
+    template : 'ys/transfer'
     staticsHost : staticsHost
     handler : pageContentHandler.transfer
   }
   {
     route : '/ys/query'
-    jadeView : 'ys/query'
+    template : 'ys/query'
     staticsHost : staticsHost
     handler : pageContentHandler.query
   }
