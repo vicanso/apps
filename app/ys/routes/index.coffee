@@ -1,88 +1,88 @@
-appConfig = require '../config'
-appPath = appConfig.getAppPath()
+config = require '../config'
+appPath = config.getAppPath()
 pageContentHandler = require "#{appPath}/helpers/pagecontenthandler"
-sessionParser = require('jtweb').sessionParser()
-staticsHost = appConfig.getStaticsHost()
+sessionParser = config.sessionParser()
+staticsHost = config.getStaticsHost()
 
 routeInfos = [
   {
-    route : ['/', '/page/:page']
+    route : ['/ys/', '/ys/page/:page']
     jadeView : 'ys/index'
     staticsHost : staticsHost
     handler : pageContentHandler.index
   }
   {
-    route : '/management'
+    route : '/ys/management'
     jadeView : 'ys/management'
     staticsHost : staticsHost
     handler : pageContentHandler.management
   }
   {
-    route : ['/sell', '/sell/:id']
+    route : ['/ys/sell', '/ys/sell/:id']
     jadeView : 'ys/sell'
     staticsHost : staticsHost
     handler : pageContentHandler.sell
   }
   {
-    route : '/buy'
+    route : '/ys/buy'
     jadeView : 'ys/buy'
     staticsHost : staticsHost
     handler : pageContentHandler.buy
   }
   {
-    route : '/transfer'
+    route : '/ys/transfer'
     jadeView : 'ys/transfer'
     staticsHost : staticsHost
     handler : pageContentHandler.transfer
   }
   {
-    route : '/query'
+    route : '/ys/query'
     jadeView : 'ys/query'
     staticsHost : staticsHost
     handler : pageContentHandler.query
   }
   {
-    route : '/items'
+    route : '/ys/items'
     handler : pageContentHandler.items
   }
   {
-    route : '/userinfo'
+    route : '/ys/userinfo'
     middleware : [sessionParser]
     handler : pageContentHandler.userInfo
   }
   {
-    route : '/adduser'
+    route : '/ys/adduser'
     type : 'post'
     middleware : [sessionParser]
     handler : pageContentHandler.addUser
   }
   {
-    route : '/login'
+    route : '/ys/login'
     type : 'post'
     middleware : [sessionParser]
     handler : pageContentHandler.login
   }
   {
-    route : '/logout'
+    route : '/ys/logout'
     middleware : [sessionParser]
     handler : pageContentHandler.logout
   }
   {
-    route : '/orderno'
+    route : '/ys/orderno'
     handler : pageContentHandler.orderNo
   }
   {
-    route : '/search'
+    route : '/ys/search'
     handler : pageContentHandler.search
   }
   {
-    route : '/save'
+    route : '/ys/save'
     middleware : [sessionParser]
     type : 'post'
     handler : pageContentHandler.save
   }
   {
-    route : '/tempsave'
+    route : '/ys/tempsave'
     middleware : [sessionParser]
     type : 'post'
     handler : pageContentHandler.tempSave

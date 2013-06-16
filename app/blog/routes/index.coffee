@@ -5,83 +5,77 @@ staticsHost = config.getStaticsHost()
 
 routeInfos = [
   {
-    route : ['/', '/tag/:tag']
-    jadeView : 'blog/index'
+    route : ['/blog', '/blog/tag/:tag']
+    template : 'blog/index'
     staticsHost : staticsHost
     handler : pageContentHandler.index
   }
   {
-    route : '/article/:id'
-    jadeView : 'blog/article'
+    route : '/blog/article/:id'
+    template : 'blog/article'
     staticsHost : staticsHost
     handler : pageContentHandler.article
   }
   {
     type : 'all'
-    route : '/userinfo'
+    route : '/blog/userinfo'
     middleware : [config.sessionParser()]
     handler : pageContentHandler.userInfo
   }
   {
-    route : '/node'
-    jadeView : 'blog/node'
+    route : '/blog/node'
+    template : 'blog/node'
     staticsHost : staticsHost
     handler : pageContentHandler.node
   }
   {
-    route : ['/savearticle', '/savearticle/:id']
-    jadeView : 'blog/savearticle'
+    route : ['/blog/savearticle', '/blog/savearticle/:id']
+    template : 'blog/savearticle'
     middleware : [config.sessionParser()]
     staticsHost : staticsHost
     handler : pageContentHandler.saveArticle
   }
   {
-    route : '/ask'
-    jadeView : 'blog/ask'
+    route : '/blog/ask'
+    template : 'blog/ask'
     staticsHost : staticsHost
     middleware : [config.sessionParser()]
     handler : pageContentHandler.ask
   }
   {
-    route : '/ask'
+    route : '/blog/ask'
     type : 'post'
     middleware : [config.sessionParser()]
     handler : pageContentHandler.ask
   }
   {
-    route : '/questions'
-    jadeView : 'blog/questions'
+    route : '/blog/questions'
+    template : 'blog/questions'
     staticsHost : staticsHost
     handler : pageContentHandler.questions
   }
   {
-    route : '/question/:id'
-    jadeView : 'blog/question'
+    route : '/blog/question/:id'
+    template : 'blog/question'
     staticsHost : staticsHost
     handler : pageContentHandler.question
   }
   {
-    route : '/question/:id'
+    route : '/blog/question/:id'
     type : 'post'
     middleware : [config.sessionParser()]
     handler : pageContentHandler.question
   }
   {
     type : 'post'
-    route : '/statistics'
+    route : '/blog/statistics'
     handler : pageContentHandler.statistics
   }
-  {
-    type : 'post'
-    route : ['/savearticle', '/savearticle/:id']
-    middleware : [config.sessionParser()]
-    handler : pageContentHandler.saveArticle
-  }
-  {
-    type : 'post'
-    route : '/mergeajax'
-    handler : pageContentHandler.mergeAjax
-  }
+  # {
+  #   type : 'post'
+  #   route : '/mergeajax'
+  #   handler : pageContentHandler.mergeAjax
+  # }
   {
     route : '/ys'
     handler : (req, res) ->

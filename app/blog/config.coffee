@@ -13,15 +13,18 @@ jtMongodb.set {
   mongodb : setting.mongodb
 }
 
-
+_sessionParser = null
 sessionParser = (req, res, next) ->
-  next()
+  if !_sessionParser
+    next()
+  else
+    _sessionParser res, res, next
 
 config = 
   getAppPath : ->
     __dirname
   sessionParser : ->
-    sessionParser
+    _sessionParser || sessionParser
   getStaticsHost : ->
     if @isProductionMode
       null
@@ -30,6 +33,12 @@ config =
   isProductionMode : process.env.NODE_ENV == 'production'
 
 
+  middleware : ->
+    (req, res, next) ->
+      if req.host == setting.host
+        req.url = "/blog#{req.url}"
+        req.originalUrl = req.url
+      next()
   route : ->
     require './routes'
   session : ->
@@ -38,6 +47,6 @@ config =
     ttl : 30 * 60
     client : jtRedis.getClient 'vicanso'
     complete : (parser) ->
-      sessionParser = parser
+      _sessionParser = parser
 
 module.exports = config

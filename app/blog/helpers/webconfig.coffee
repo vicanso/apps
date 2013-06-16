@@ -22,21 +22,24 @@ webConfig =
         url : '/tag/others'
         title : 'others'
       }
-      {
-        url : '/questions'
-        title : '问题区'
-      }
-      {
-        url : '/ask'
-        title : '提问'
-      }
+      # {
+      #   url : '/questions'
+      #   title : '问题区'
+      # }
+      # {
+      #   url : '/ask'
+      #   title : '提问'
+      # }
     ]
     
-    urlList = _.pluck navData, 'url'
+    urlPrefix = '/blog'
+    urlList = _.map navData, (item) ->
+      urlPrefix + item.url
     sortUrlList = _.sortBy urlList, (url) ->
       return -url.length
     baseUrl = ''
-    if requestUrl == '/'
+    console.dir requestUrl
+    if requestUrl == "#{urlPrefix}/"
       baseUrl = requestUrl
     else
       _.each sortUrlList, (url, i) ->
