@@ -1,0 +1,20 @@
+extends ./layout
+block bodyContainer
+  - fileImporter.importJs(['/oss/javascripts/mimesetting.coffee', '/oss/javascripts/msglist.coffee']);
+  - fileImporter.importCss(['/oss/stylesheets/msglist.styl', '/oss/stylesheets/mimesetting.styl'])
+
+  - fileImporter.importCss(['/oss/stylesheets/icon.styl', '/oss/jtui/ui.css', '/oss/stylesheets/index.styl']);
+  - fileImporter.importJs(['/oss/jtui/ui.js', '/oss/javascripts/index.coffee']);
+  include ./leftcontainer
+  #othersContainer
+    #objectTableContainer
+      h3.title.jtGrayGradient Object管理
+        span.paths.normalFont 当前位置：
+      include ./objecttableview
+      include ./ctrls
+  - fileImporter.importJs(['/oss/javascripts/path.coffee', '/oss/javascripts/objectattribute.coffee']);
+  - fileImporter.importJs(['/oss/javascripts/setting.coffee']);
+  - fileImporter.importCss(['/oss/stylesheets/setting.styl']);
+  //- #settingContainer
+  //-   .resHeaderContainer
+  //-     a.jtBtn(href='javascript:;') 添加新规则      

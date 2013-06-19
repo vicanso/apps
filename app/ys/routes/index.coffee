@@ -6,7 +6,7 @@ staticsHost = config.getStaticsHost()
 
 routeInfos = [
   {
-    route : ['/ys/', '/ys/page/:page']
+    route : ['/ys', '/ys/page/:page']
     template : 'ys/index'
     staticsHost : staticsHost
     handler : pageContentHandler.index

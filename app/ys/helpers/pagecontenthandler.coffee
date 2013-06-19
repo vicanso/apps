@@ -26,6 +26,10 @@ pageContentHandler =
       if err
         cbf err
         return
+      else if !data.length
+        err = new Error 'the data is empty!'
+        cbf err
+        return
       items = [[], [], [], []]
       itemsLength = items.length
       total = data[0]
