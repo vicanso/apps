@@ -105,10 +105,8 @@ OSS.Model.Obj = Backbone.Model.extend {
   isNew : ->
     false
   url : ->
-    currentPath = @get 'currentPath'
-    if currentPath.charAt(0) == '/'
-      currentPath = currentPath.substring 1
-    "#{@get('bucketPath')}?obj=#{currentPath}#{@get('name')}"
+    path = @get('path') || ''
+    "/deleteobject/#{@get('bucket')}?obj=#{path}#{@get('name')}"
     # @get('bucketPath') + '?prefix=' + @get('name')
   initialize : ->
     _type = @get '_type'
@@ -116,7 +114,9 @@ OSS.Model.Obj = Backbone.Model.extend {
     # if !name
     #   @set 'name', '../'
     #   @set 'lastModified', '-'
+    #   @set 'back', true
     #   _type = 'folder'
+    #   @set '_type', _type
     @set 'className', _type
     if _type == 'folder'
       @set 'typeView', '文件夹'
@@ -211,6 +211,7 @@ OSS.View.Obj = Backbone.View.extend {
     deleteModel = @model.at index
     new JT.View.Alert {
       model : new JT.Model.Dialog {
+        modal : true
         title : "删除#{deleteModel.get('name')}"
         content : '<p>删除该文件之后无法恢复，确定需要删除吗？</p>'
         btns : 

@@ -15,7 +15,11 @@ jQuery ($) ->
       console.dir 'delete'
       # self.delete self.getAbsolutePath objName
   }
-
+  resize = ->
+    height = $(window).height()
+    $('#objectTableContainer .objectTableView .content').height height - 110
+  $(window).on 'resize', _.debounce resize, 200
+  # resize()
   window.OBJ_COLLECTION = objCollection
 
  

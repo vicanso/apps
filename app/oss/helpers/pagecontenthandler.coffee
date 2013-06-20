@@ -122,11 +122,15 @@ pageContentHandler =
     #   ]
     # }
     # return
-    ossClient.listObjects bucket, {prefix : prefix, delimiter : '/', marker : marker, 'max-keys' : 100}, (err, objs) ->
+    ossClient.listObjects bucket, {prefix : prefix, delimiter : '/', marker : marker, 'max-keys' : 1000}, (err, objs) ->
       if err
         cbf err
       else
         cbf null, objs
+  deleteObject : (req, res, cbf) ->
+    bucket = req.param 'bucket'
+    obj = req.param 'obj'
+    ossClient.deleteObject bucket, obj, cbf
   deleteObjects : (req, res, cbf) ->
     bucket = req.param 'bucket'
     data = req.body

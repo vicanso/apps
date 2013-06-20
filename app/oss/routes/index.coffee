@@ -41,6 +41,11 @@ routeInfos = [
     handler : pageContentHandler.deleteObjects
   }
   {
+    type : 'delete'
+    route : '/oss/deleteobject/:bucket'
+    handler : pageContentHandler.deleteObject
+  }
+  {
     route : '/oss/createbucket/:bucket'
     handler : pageContentHandler.createBucket
   }

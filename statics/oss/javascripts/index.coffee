@@ -329,7 +329,9 @@ jQuery ($) ->
         setting.url = urlPrefix + setting.url
     ).ajaxError (e, res) ->
 
-
+    _.delay ->
+      $(window).trigger 'resize'
+    , 100
 
     # $.getScript '/static/oss/javascripts/objectattribute.coffee'
     # window.OSS_PATH = new OSS.Model.Path
