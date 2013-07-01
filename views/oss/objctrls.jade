@@ -1,0 +1,16 @@
+- fileImporter.importCss('/oss/stylesheets/objctrls.styl');
+- fileImporter.importJs(['/common/swfupload/swfupload.js', '/common/swfupload/swfupload.queue.js', '/oss/javascripts/objctrls.coffee']);
+.objCtrlsContainer
+  .btns
+    .btn.uploadBtn
+      a.jtBtn(href='javascript:;') 上传
+      .uploadSwfContainer
+        span#uploadBtn
+    .btn.createFolder
+      a.jtBtn(href='javascript:;') 创建文件夹
+    .btn.refresh
+      a.jtBtn(href='javascript:;') 刷新
+    .searchContainer
+      input.keyword(type='text')
+      span.search .
+  span.paths.normalFont 当前位置：

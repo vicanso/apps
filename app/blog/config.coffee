@@ -13,18 +13,13 @@ jtMongodb.set {
   mongodb : setting.mongodb
 }
 
-_sessionParser = null
-sessionParser = (req, res, next) ->
-  if !_sessionParser
-    next()
-  else
-    _sessionParser res, res, next
+sessionParser = null
 
 config = 
   getAppPath : ->
     __dirname
   sessionParser : ->
-    _sessionParser || sessionParser
+    sessionParser
   getStaticsHost : ->
     if @isProductionMode
       null
@@ -47,6 +42,6 @@ config =
     ttl : 30 * 60
     client : jtRedis.getClient 'vicanso'
     complete : (parser) ->
-      _sessionParser = parser
+      sessionParser = parser
 
 module.exports = config

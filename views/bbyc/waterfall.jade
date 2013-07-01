@@ -1,0 +1,27 @@
+
+mixin waterfallItem(item)
+  .itemContainer(title='#{item.title}')
+    .itemAnchor
+      .price #{item.price}
+      a(href='#{item.url}')
+        img(src='#{item.picUrl}')
+    .info
+      .title #{item.shortTitle}
+      .feedback
+        .comment 评论 #{item.commentTotal}
+        .like 
+          a.btn(href='javascript:;') 喜欢
+          span.total #{item.likeTotal}
+mixin waterfall(items)
+  each item in items
+    .waterfallItem
+      mixin waterfallItem(item)
+- var waterfallItems = viewData.waterfallItems;
+if waterfallItems
+  - fileImporter.importCss('/bbyc/stylesheets/waterfall.styl');
+  .waterfallContainer
+    each waterfall in waterfallItems
+      .waterfall
+        mixin waterfall(waterfall)
+
+  

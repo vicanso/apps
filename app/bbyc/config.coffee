@@ -4,13 +4,15 @@ jtRedis.configure
   query : true
   redis : setting.redis
 
+
 jtMongodb = require 'jtmongodb'
 jtMongodb.set {
-  queryTime : true
+  # queryTime : true
   valiate : true
   timeOut : 0
   mongodb : setting.mongodb
 }
+
 
 sessionParser = null
 
@@ -19,19 +21,26 @@ config =
     __dirname
   sessionParser : ->
     sessionParser
+  getStaticsHost : ->
+    if @isProductionMode
+      null
+    else
+      null
+  isProductionMode : process.env.NODE_ENV == 'production'
 
-  firstMiddleware : ->
+
+  middleware : ->
     (req, res, next) ->
       if req.host == setting.host
-        req.url = "/oss#{req.url}"
+        req.url = "/bbyc#{req.url}"
         req.originalUrl = req.url
       next()
   route : ->
     require './routes'
   session : ->
-    key : 'vicanso_oss'
+    key : 'vicanso'
     secret : 'jenny&tree'
-    ttl : 120 * 60
+    ttl : 30 * 60
     client : jtRedis.getClient 'vicanso'
     complete : (parser) ->
       sessionParser = parser

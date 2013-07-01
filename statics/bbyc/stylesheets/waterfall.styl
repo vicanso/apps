@@ -1,0 +1,83 @@
+@import '../../common/stylesheets/mixins/vicanso'
+$itemPadding = 13px
+body
+  background-color #f7dcbe
+
+itemAnchor()
+  .itemAnchor
+    position relative
+    .price
+      position absolute
+      right 16px
+      bottom 2px
+      height 18px
+      color #0e0e0e
+      padding 2px 5px
+      line-height @height
+      background-color rgba(255, 255, 255, 0.5)
+      filter unquote("progid:dximagetransform.microsoft.gradient(enabled='true', startColorstr='#7FFFFFFF', endColorstr='#7FFFFFFF')")
+    a
+      display block
+      padding $itemPadding $itemPadding 0
+      img
+        display block
+        width 100%
+
+itemInfo()
+  .info
+    $infoMargin = 8px
+    padding 0 $itemPadding
+    .title
+      margin-top $infoMargin
+    .feedback
+      margin-top $infoMargin
+      .comment
+        float right
+      .like
+        .btn
+          text-align center
+          padding 3px 10px
+          margin-right 3px
+          color #F5F5F8
+          border 1px solid #B0A1D5
+          background-color #D99FDD
+          border-radius 3px
+
+.waterfallContainer
+  width 900px
+  margin auto
+  overflow hidden
+  .waterfall
+    float left
+    width 25%
+    .waterfallItem
+      margin 15px 5px 0
+      box-shadow 0 0 1px rgb(34, 25, 25, 0.1)
+      border 1px solid #e6e4e4\9
+      .itemContainer
+        background-color #fff
+        padding-bottom $itemPadding
+        itemAnchor()
+        itemInfo()
+
+
+// height: 20px;
+// overflow: hidden;
+// text-align: right;
+// background-color: rgba(0, 0, 0, 0.5);
+// background: transparent\9;
+// filter: progid:dximagetransform.microsoft.gradient(enabled='true', startColorstr='#7F000000', endColorstr='#7F000000');
+// color: white;
+
+
+// background: #ffffff;
+// height: 18px;
+// line-height: 18px;
+// padding: 0 5px;
+// position: absolute;
+// bottom: 2px;
+// right: 15px;
+// opacity: 0.8;
+// filter: alpha(opacity=80);
+// }
+      

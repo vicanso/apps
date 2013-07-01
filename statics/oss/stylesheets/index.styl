@@ -19,16 +19,6 @@ $leftContainerWidth = 60px
   .title
     height 30px
     line-height @height
-    .paths
-      margin-left 20px
-      .path
-        padding-right 10px
-        margin-right 10px
-        background url(../images/iarrow-left.png) no-repeat center right
-        &.active
-          background-image none
-          color #2a2a2a
-          cursor default
 .objAttrDialog
   $border = 1px solid #c0c0c0
   .content
@@ -47,8 +37,7 @@ $leftContainerWidth = 60px
       padding 2px 10px
       .inputContainer
         input
-          border-radius 15px
-          text-indent 10px
+          text-indent 5px
           width 100%
           height 22px
           line-height @height
@@ -65,3 +54,38 @@ $leftContainerWidth = 60px
           width 135px
         .userInput
           width 110px
+#loadingMask
+  display none
+  position fixed
+  left 0
+  top 0
+  right 0
+  bottom 0
+  z-index 99
+  .bgExec
+    padding 10px
+    color #fff
+    float right
+  background rgba(0,0,0,0.6) url(../images/loading.gif) no-repeat center
+
+#msgListContainer
+  position fixed
+  right 0
+  top 0
+  width 100px
+
+#loginDialog
+  display none
+  position fixed
+  top 100
+  left 50%
+  width 400px
+  margin-left -(@width / 2)
+  .inputItem
+    margin-top 10px
+    .name
+      inlineBlock()
+      width 75px
+    input
+      width 300px
+

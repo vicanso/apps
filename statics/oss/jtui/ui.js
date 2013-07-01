@@ -144,9 +144,8 @@
     */
 
     hide: function() {
-      this.reset();
       this.$el.find('.showSelect span').removeClass('jtArrowUp').addClass('jtArrowDown');
-      this.$el.find('.selectList').hide();
+      this.$el.find('.selectList').hide().find('.option').show();
       return this;
     },
     /**
@@ -179,7 +178,10 @@
     */
 
     reset: function() {
-      this.$el.find('.selectList .option').show();
+      this.model.each(function(item) {
+        return item.set('checked', false);
+      });
+      this.$el.find('.selectList').hide().find('.option').show();
       return this;
     },
     /**
@@ -343,6 +345,7 @@
       };
       html = this.template(this.templateData);
       this.$el.html(html);
+      this.$el.find('.userInput').width(this.$el.find('.jtSelect').width() - 25);
       return this;
     }
   });
@@ -495,10 +498,8 @@
 
   JT.View.Alert = Backbone.View.extend({
     initialize: function() {
-      var el;
-      el = $('<div class="jtAlertDlg" />').appendTo('body').get(0);
       return new JT.View.Dialog({
-        el: el,
+        el: this.el || $('<div class="jtAlertDlg" />').appendTo('body'),
         model: this.model
       });
     }

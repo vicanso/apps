@@ -32,6 +32,7 @@ jQuery ($) ->
       }
       @
     clickSetting : ->
+      window.SETTING.show()
       @
     ###*
      * showBucketsView 显示bucket列表
@@ -52,7 +53,7 @@ jQuery ($) ->
         @bucketList = bucketList
       bucketList.fetch {
         success : (collection, res, options) ->
-          collection.reset res
+          # collection.reset res
           collection.at(0).set 'active', true
       }
       @

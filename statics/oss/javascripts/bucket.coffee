@@ -11,8 +11,17 @@ OSS.Model.Path = Backbone.Model.extend {
     url = "/objects/#{@get('bucket')}"
     params = []
     path = @get 'path'
+    prefix = @get 'prefix'
     if path
+      if prefix
+        path += prefix
       params.push "prefix=#{path}"
+    else if prefix
+      params.push "prefix=#{prefix}"
+    keyword = @get 'keyword'
+    if keyword
+      params.push "keyword=#{keyword}"
+
     markers = @get 'markers'
     if markers?.length
       params.push "marker=#{_.last(markers)}"
@@ -24,7 +33,8 @@ OSS.Model.Path = Backbone.Model.extend {
   prevPage : ->
     markers = @get 'markers'
     markers.pop()
-    markers.pop()
+    if !@get 'lastPage'
+      markers.pop()
     @set 'markers', markers
     @trigger 'getdata', @
 }

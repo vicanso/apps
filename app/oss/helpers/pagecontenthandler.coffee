@@ -1,140 +1,83 @@
 _ = require 'underscore'
 async = require 'async'
+fs = require 'fs'
+crypto = require 'crypto'
 JTOss = require 'jtoss'
-ossClient = new JTOss 'Z8pQTAkCNNDAOPjt', 'z014NFAjKNLpvP07TSACKjNDgQDsqS'
+ossDBClient = require('jtmongodb').getClient 'oss'
+wrapperCbf = (cbf) ->
+  _.wrap cbf, (func, err, data) ->
+    func err, data, {
+      'Cache-Control' : 'no-cache, no-store'
+    }
+
 pageContentHandler =
   index : (req, res, cbf) ->
     cbf null, {
       title : '测试'
     }
   buckets : (req, res, cbf) ->
-    # buckets = [
-    #   {
-    #     name : 'jennytest'
-    #     createdAt : '2013-06-01T12:28:35.000Z'
-    #   }
-    #   {
-    #     name : 'vicanso1'
-    #     createdAt : '2013-06-15T13:12:14.000Z'
-    #   }
-    #   {
-    #     name : 'vicanso11'
-    #     createdAt : '2013-06-15T13:12:31.000Z'
-    #   }
-    # ]
-    # cbf null, buckets
-    # return
+    cbf = wrapperCbf cbf
+    ossClient = req.ossClient
     ossClient.listBuckets (err, buckets) ->
       if err
         cbf err
       else
-        console.dir buckets
         cbf null, buckets 
   headObject : (req, res, cbf) ->
+    cbf = wrapperCbf cbf
+    ossClient = req.ossClient
     bucket = req.param 'bucket'
     obj = req.param 'obj'
     if req.method == 'POST'
       headers = _.pick req.body, 'Content-Language Expires Cache-Control Content-Encoding Content-Disposition'.split ' '
-      # console.dir headers
-      # return 
       ossClient.updateObjectHeader bucket, obj, headers, cbf
     else
-
-      # cbf null, {
-      #   Connection : "close"
-      #   'Content-Encoding' : "gzip"
-      #   'Content-Length' : "16011"
-      #   'Content-Type' : "text/plain"
-      #   Date : "Wed, 19 Jun 2013 02:02:27 GMT"
-      #   ETag : '"519328458B6A177B06752ECCE317D601"'
-      #   'Last-Modified' : "Sat, 15 Jun 2013 13:39:25 GMT"
-      #   server : "AliyunOSS"
-      #   'x-oss-bucket-location' : "oss-hangzhou-a"
-      #   'x-oss-request-id' : "51C11133D7F49A9F7B343B41"
-      # }
-      # return
-
       ossClient.headObject bucket, obj, (err, res) ->
         if err
           cbf err
         else
           cbf null, res
   headObjects : (req, res, cbf) ->
+    cbf = wrapperCbf cbf
+    ossClient = req.ossClient
     bucket = req.param 'bucket'
     headers = req.body.headers || {}
     objs = req.body.objs
-    # console.dir objs
-    # cbf null, {}
-    # return
-
     async.eachLimit objs, 10, (obj, cbf) ->
-      console.dir obj
       ossClient.updateObjectHeader bucket, obj, headers, cbf
     , cbf
-  bucket : (req, res, cbf) ->
-  #   bucket = req.param 'bucket'
-  #   return
-  #   if !bucket
-  #     err = new Error 'the bucket is null'
-  #     cbf err
-  #   else
-  #     method = req.method
-  #     if method == 'GET'
-  #       prefix = req.param('prefix') || ''
-  #       if prefix && prefix.charAt(0) == '/'
-  #         prefix = prefix.substring 1
-  #       next = req.param 'next'
-  #       ossClient.listObjects bucket, {prefix : prefix, delimiter : '/', marker : next, 'max-keys' : 100}, (err, objs) ->
-  #         if err
-  #           cbf err
-  #         else
-  #           console.dir objs
-  #           cbf null, objs
-  #     else if method == 'DELETE'
-  #       obj = req.param 'obj'
-  #       ossClient.deleteObject bucket, obj, cbf
   objects : (req, res, cbf) ->
+    cbf = wrapperCbf cbf
+    ossClient = req.ossClient
     bucket = req.param 'bucket'
     prefix = req.param('prefix') || ''
+    keyword = req.param 'keyword'
     marker = req.param 'marker'
-    # cbf null, {
-    #   total : 2
-    #   next : (marker || 0) + 1
-    #   items : [
-    #     {
-    #       name : '中文'
-    #       _type : 'folder'
-    #     }
-    #     {
-    #       name : '和尚塚.txt'
-    #       lastModified : '2013-06-15T13:39:25.000Z'
-    #       eTag : '"519328458B6A177B06752ECCE317D601"'
-    #       type : 'Normal'
-    #       size : '16011'
-    #     }
-    #     {
-    #       name : '序章 七魔使降临！职业决斗者冰狩登场.txt'
-    #       lastModified : '2013-06-15T13:43:01.000Z'
-    #       eTag : '"24FD6DBEDE72B1227426038B1B2706B3"'
-    #       type : 'Normal'
-    #       size : '11889'
-    #     }
-    #   ]
-    # }
-    # return
-    ossClient.listObjects bucket, {prefix : prefix, delimiter : '/', marker : marker, 'max-keys' : 1000}, (err, objs) ->
-      if err
-        cbf err
-      else
-        cbf null, objs
+    globalSetting = req.session?.globalSetting
+    maxKeys = 100
+    console.dir keyword
+    if globalSetting
+      eachPageSize = _.find globalSetting, (setting) ->
+        setting.key == 'eachPageSize'
+      if eachPageSize
+        maxKeys = eachPageSize.value
+    if !keyword
+      ossClient.listObjects bucket, {prefix : prefix, delimiter : '/', marker : marker, 'max-keys' : maxKeys}, cbf
+    else
+      filter = (objInfo) ->
+        ~objInfo.name.indexOf keyword
+      ossClient.listObjectsByCustom bucket, {prefix : prefix, marker : marker, 'max-keys' : maxKeys, max : maxKeys, filter : filter}, cbf
   deleteObject : (req, res, cbf) ->
+    cbf = wrapperCbf cbf
+    ossClient = req.ossClient
     bucket = req.param 'bucket'
     obj = req.param 'obj'
     ossClient.deleteObject bucket, obj, cbf
   deleteObjects : (req, res, cbf) ->
+    cbf = wrapperCbf cbf
+    ossClient = req.ossClient
     bucket = req.param 'bucket'
     data = req.body
-    # currentPath = data.currentPath
     objs = data.objs
     if bucket && objs?.length
       xmlArr = ['<?xml version="1.0" encoding="UTF-8"?><Delete><Quiet>true</Quiet>']
@@ -144,13 +87,97 @@ pageContentHandler =
           obj = obj.substring 0, len - 1
         xmlArr.push "<Object><Key>#{obj}</Key></Object>"
       xmlArr.push '</Delete>'
-      # cbf null
-      # return
       ossClient.deleteObjects bucket, xmlArr.join(''), cbf
     else
       cbf null
   createBucket : (req, res, cbf) ->
+    cbf = wrapperCbf cbf
+    ossClient = req.ossClient
     bucket = req.param 'bucket'
     if bucket
       ossClient.createBucket bucket, cbf
+  upload : (req, res, cbf) ->
+    cbf = wrapperCbf cbf
+    ossClient = req.ossClient
+    data = req.body
+    filePath = req.files.Filedata.path
+    ossClient.putObject data.bucket, "#{data.path || ''}#{data.Filename}", filePath, (err, data) ->
+      fs.unlink filePath
+      cbf err, data
+  login : (req, res, cbf) ->
+    cbf = wrapperCbf cbf
+    sess = req.session
+    ossInfo = req.body
+    ossInfo.userHash = crypto.createHash('sha1').update("#{ossInfo.keyId}#{ossInfo.keySecret}").digest 'hex'
+    async.waterfall [
+      (cbf) ->
+        ossClient = new JTOss ossInfo.keyId, ossInfo.keySecret
+        ossClient.listBuckets cbf
+      (buckets, cbf) ->
+        ossDBClient.findOne 'user', {hash : ossInfo.userHash}, cbf
+      (data, cbf) ->
+        if data
+          # _.extend ossInfo, data
+          cbf null, data
+        else
+          ossDBClient.save 'user', {hash : ossInfo.userHash}, cbf
+    ], (err, data) ->
+      if err
+        cbf err
+      else
+        if data
+          sess.globalSetting = data.globalSetting
+          sess.headerSetting = data.headerSetting
+          sess.userMetas = converUserMetas data.headerSetting
+        sess.ossInfo = ossInfo
+        cbf null
+  setting : (req, res, cbf) ->
+    cbf = wrapperCbf cbf
+    sess = req.session
+    type = req.param('type') || 'global'
+    if req.method == 'GET'
+      if type == 'global'
+        setting = sess.globalSetting || [
+          {
+            key : 'eachPageSize'
+            desc : '每页显示数量(1-1000)'
+            value : 100
+          }
+        ]
+      else
+        setting = sess.headerSetting || []
+      cbf null, setting
+    else
+      if type == 'global'
+        sess.globalSetting = req.body.setting
+        ossDBClient.update 'user', {hash : sess.ossInfo.userHash}, {'$set' : {globalSetting : req.body.setting}},  ->
+      else
+        sess.headerSetting = req.body.setting
+        ossDBClient.update 'user', {hash : sess.ossInfo.userHash}, {'$set' : {headerSetting : req.body.setting}},  ->
+        sess.userMetas = converUserMetas req.body.setting
+      cbf null
+  createFolder : (req, res, cbf) ->
+    cbf = wrapperCbf cbf
+    bucket = req.param 'bucket'
+    folderPath = req.param('path') + '/'
+    ossClient = req.ossClient
+    ossClient.putObject bucket, folderPath, null, cbf
+  search : (req, res, cbf) ->
+    cbf = wrapperCbf cbf
+    bucket = req.param 'bucket'
+    keyword = req.param('keyword').trim()
+    ossClient = req.ossClient
+    ossClient.listObjects bucket, {prefix : keyword, 'max-keys' : 100}, cbf
+
+converUserMetas = (headerSetting) ->
+  userMetas = {}
+  _.each headerSetting, (setting) ->
+    typeList = setting.type.split ','
+    _.each typeList, (type) ->
+      type = type.trim()
+      if type.charAt(0) != '.'
+        type = ".#{type}"
+      cfg = userMetas[type] ?= {}
+      cfg[setting.header] = setting.value
+  userMetas
 module.exports = pageContentHandler

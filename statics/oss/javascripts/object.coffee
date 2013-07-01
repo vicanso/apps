@@ -57,7 +57,7 @@ OSS.View.ObjAttr = Backbone.View.extend {
       obj = $ @
       inputValue = obj.find('.inputContainer input').val()
       if inputValue?.length
-        meta[obj.find('.param').text()] = inputValue.trim()
+        meta[obj.find('.param').text()] = inputValue
     model.save meta, {
       error : (model, res) ->
         console.dir 'save meta fail!'
@@ -104,6 +104,9 @@ OSS.Model.Obj = Backbone.Model.extend {
     _type : ''
   isNew : ->
     false
+  set : (attributes, options) ->
+    if !(attributes == '_check' && @get('_type') == 'folder')
+      Backbone.Model.prototype.set.apply @, arguments
   url : ->
     path = @get('path') || ''
     "/deleteobject/#{@get('bucket')}?obj=#{path}#{@get('name')}"
@@ -151,7 +154,8 @@ OSS.Collection.Obj = Backbone.Collection.extend {
   model : OSS.Model.Obj
   invertCheck : ->
     @each (itemModel) ->
-      itemModel.set '_check', !itemModel.get '_check'
+      checked = !itemModel.get '_check'
+      itemModel.set '_check', checked
 }
 
 OSS.View.Obj = Backbone.View.extend {
