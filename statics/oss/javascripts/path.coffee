@@ -1,25 +1,25 @@
-ossPath = new OSS.Model.Path
-window.OSS_PATH = ossPath
+ossFilter = new OSS.Model.Filter
+window.OSS_FILTER = ossFilter
 jQuery ($) ->
   pathsObj = $('#objectTableContainer .paths').on 'click', '.path', ->
     obj = $ @
     if !obj.hasClass 'active'
-      ossPath.set 'path', obj.attr 'data-path'
+      ossFilter.set 'path', obj.attr 'data-path'
   setMarkers = (next) ->
     if !next
-      ossPath.set 'lastPage', true
+      ossFilter.set 'lastPage', true
       return
-    markers = ossPath.get('markers') || []
+    markers = ossFilter.get('markers') || []
     if markers.length
-      ossPath.set 'firstPage', false
+      ossFilter.set 'firstPage', false
     else
-      ossPath.set 'firstPage', true
+      ossFilter.set 'firstPage', true
     markers.push next
-    ossPath.set 'markers', markers
-    ossPath.set 'lastPage', false
+    ossFilter.set 'markers', markers
+    ossFilter.set 'lastPage', false
   setPaths = ->
-    paths = _.compact ossPath.get('path').split '/'
-    paths.unshift ossPath.get 'bucket'
+    paths = _.compact ossFilter.get('path').split '/'
+    paths.unshift ossFilter.get 'bucket'
     lastPath = paths.pop()
     dataPath = null
     pathHtmlArr = _.map paths, (currentPath, i) ->
@@ -31,19 +31,19 @@ jQuery ($) ->
     pathHtmlArr.push '<a href="javascript:;" class="path active">' + lastPath + '</a>'
     pathsObj.html "当前位置：#{pathHtmlArr.join('')}"
 
-  ossPath.on 'change:path change:bucket', (model) ->
+  ossFilter.on 'change:path change:bucket', (model) ->
     model.set 'markers', ''
     model.trigger 'getdata', model
     setPaths()
   
     
-  ossPath.on 'refresh', (model) ->
+  ossFilter.on 'refresh', (model) ->
     markers = model.get 'markers'
     if markers
       markers.pop()
       model.set 'markers', markers
     model.trigger 'getdata', model
-  ossPath.on 'getdata', (model) ->
+  ossFilter.on 'getdata', (model) ->
     model.fetch {
       success : (model, res) ->
         if res
@@ -68,19 +68,19 @@ jQuery ($) ->
       error : ->
         console.dir 'oss path fetch fail!'
     }
-  ossPath.listenTo window.OBJ_COLLECTION, 'change:active', (objModel, value) ->
+  ossFilter.listenTo window.OBJ_COLLECTION, 'change:active', (objModel, value) ->
     if value && objModel.get('_type') == 'folder'
-      path = ossPath.get 'path'
+      path = ossFilter.get 'path'
       if objModel.get 'back'
         paths = _.compact path.split '/'
         paths.pop()
         if paths.length
-          ossPath.set 'path', "#{paths.join('/')}/"
+          ossFilter.set 'path', "#{paths.join('/')}/"
         else
-          ossPath.set 'path', ''
+          ossFilter.set 'path', ''
       else
         if path
           path += "#{objModel.get('name')}"
         else
           path = objModel.get 'name'
-        ossPath.set 'path', path
+        ossFilter.set 'path', path

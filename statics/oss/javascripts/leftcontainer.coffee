@@ -59,7 +59,7 @@ jQuery ($) ->
       @
     setBucketActive : (bucket) ->
       @activeBucket = bucket
-      window.OSS_PATH.set 'bucket', bucket.get 'name'
+      window.OSS_FILTER.set 'bucket', bucket.get 'name'
       @
     # changePath : (pathName = '') ->
     #   ossPath = window.OSS_PATH

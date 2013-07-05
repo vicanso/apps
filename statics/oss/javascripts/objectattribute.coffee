@@ -1,9 +1,9 @@
 jQuery ($) ->
   window.OBJ_COLLECTION.on 'change:viewAttr', (model, value) ->
     if value
-      ossPath = window.OSS_PATH
-      bucket = ossPath.get 'bucket'
-      path = ossPath.get 'path'
+      ossFilter = window.OSS_FILTER
+      bucket = ossFilter.get 'bucket'
+      path = ossFilter.get 'path'
       name = model.get 'name'
       if path
         name = path + name

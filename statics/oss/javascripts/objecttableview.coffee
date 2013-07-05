@@ -1,5 +1,5 @@
 jQuery ($) ->
-  ossPath = window.OSS_PATH
+  ossFilter = window.OSS_FILTER
   objCollection = new OSS.Collection.Obj
   
   new OSS.View.Obj {

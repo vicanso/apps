@@ -52,7 +52,7 @@ pageContentHandler =
     bucket = req.param 'bucket'
     prefix = req.param('prefix') || ''
     searchType = req.param 'searchType'
-    # keyword = req.param 'keyword'
+    keyword = req.param 'keyword'
     marker = req.param 'marker'
     delimiter = req.param 'delimiter' 
     globalSetting = req.session?.globalSetting
@@ -63,11 +63,10 @@ pageContentHandler =
       if eachPageSize
         maxKeys = eachPageSize.value
     if !searchType || searchType == 'prefix'
+      prefix = prefix || keyword
       ossClient.listObjects bucket, {prefix : prefix, delimiter : delimiter, marker : marker, 'max-keys' : maxKeys}, cbf
     else
-      keyword = prefix
       prefix = ''
-
       query =
         prefix : prefix
         keyword : keyword

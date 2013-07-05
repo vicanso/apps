@@ -10,12 +10,12 @@ jQuery ($) ->
       btn = @$el.find '.nextPage'
       if btn.hasClass 'disabled'
         return
-      window.OSS_PATH.nextPage()
+      window.OSS_FILTER.nextPage()
     prevPage : ->
       btn = @$el.find '.prevPage'
       if btn.hasClass 'disabled'
         return
-      window.OSS_PATH.prevPage()
+      window.OSS_FILTER.prevPage()
     invertSelection : ->
       window.OBJ_COLLECTION.invertCheck()
 
@@ -48,18 +48,18 @@ jQuery ($) ->
         objs = @getCheckObjs true
         if objs.length
           $.ajax({
-            url : "/headobjects/#{window.OSS_PATH.get('bucket')}"
+            url : "/headobjects/#{window.OSS_FILTER.get('bucket')}"
             type : 'post'
             data : 
               headers : result.headers
               objs : objs
           }).done((res) ->
-            window.OSS_PATH.trigger 'refresh', window.OSS_PATH
+            window.OSS_FILTER.trigger 'refresh', window.OSS_FILTER
           ).fail (res) ->
             console.dir 'headobjects fail!'
     getCheckObjs : (filterFolder) ->
-      path = window.OSS_PATH.get 'path'
-      bucket = window.OSS_PATH.get 'bucket'
+      path = window.OSS_FILTER.get 'path'
+      bucket = window.OSS_FILTER.get 'bucket'
       objs = _.compact window.OBJ_COLLECTION.map (objModel) ->
         if objModel.get '_check'
           if !filterFolder
@@ -95,12 +95,12 @@ jQuery ($) ->
       ], (err, objs) =>
         if objs.length
           $.ajax({
-            url : "/deleteobjects/#{window.OSS_PATH.get('bucket')}"
+            url : "/deleteobjects/#{window.OSS_FILTER.get('bucket')}"
             type : 'post'
             data :
               objs : objs
           }).done((res) =>
-            window.OSS_PATH.trigger 'refresh', window.OSS_PATH
+            window.OSS_FILTER.trigger 'refresh', window.OSS_FILTER
           ).fail (res) ->
             console.dir 'deleteobjects fail!'
 
@@ -121,9 +121,9 @@ jQuery ($) ->
       @hasChecked = false
       @
     initialize : ->
-      @listenTo window.OSS_PATH, 'change:firstPage', (model, value) =>
+      @listenTo window.OSS_FILTER, 'change:firstPage', (model, value) =>
         @showPageBtn '.prevPage', value
-      @listenTo window.OSS_PATH, 'change:lastPage', (model, value) =>
+      @listenTo window.OSS_FILTER, 'change:lastPage', (model, value) =>
         @showPageBtn '.nextPage', value
       setCheckedStatus = _.debounce =>
         @setCheckedStatus()

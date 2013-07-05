@@ -6,9 +6,9 @@ jQuery ($) ->
       'click .btns .search' : 'search'
     search : ->
       keyword = @$el.find('.searchContainer .keyword').val()
-      window.OSS_PATH.set 'markers', []
-      window.OSS_PATH.set 'keyword', keyword
-      window.OSS_PATH.trigger 'getdata', window.OSS_PATH
+      window.OSS_FILTER.set 'markers', []
+      window.OSS_FILTER.set 'keyword', keyword
+      window.OSS_FILTER.trigger 'getdata', window.OSS_FILTER
       # window.OSS_PATH.set 'keyword', keyword
     initSearchEvent : ->
       keywordObj = @$el.find '.keyword'
@@ -19,11 +19,11 @@ jQuery ($) ->
         placeholder = obj.attr 'data-placeholder'
         keywordObj.attr 'placeholder', placeholder
         if name == 'path'
-          window.OSS_PATH.set 'delimiter', value
+          window.OSS_FILTER.set 'delimiter', value
         else
-          window.OSS_PATH.set 'searchType', value
+          window.OSS_FILTER.set 'searchType', value
     refresh : ->
-      window.OSS_PATH.trigger 'refresh', window.OSS_PATH
+      window.OSS_FILTER.trigger 'refresh', window.OSS_FILTER
     createFolder : ->
       async.waterfall [
         (cbf) ->
@@ -57,12 +57,12 @@ jQuery ($) ->
           }
         (folderName, cbf) ->
           if folderName
-            path = window.OSS_PATH.get('path')
+            path = window.OSS_FILTER.get('path')
             path = path + folderName
-            url = "/createfolder/#{window.OSS_PATH.get('bucket')}?path=#{path}"
+            url = "/createfolder/#{window.OSS_FILTER.get('bucket')}?path=#{path}"
             console.dir url
             $.get(url).done ->
-              window.OSS_PATH.trigger 'refresh', window.OSS_PATH
+              window.OSS_FILTER.trigger 'refresh', window.OSS_FILTER
       ]
       # path = window.OSS_PATH.get('path') + '/'
       # url = "/createfolder/#{window.OSS_PATH.get('bucket')}#{path}"
@@ -87,8 +87,8 @@ jQuery ($) ->
         file_dialog_complete_handler : (numFilesSelected) ->
           if numFilesSelected
             self.swfUpload.setPostParams {
-              bucket : window.OSS_PATH.get 'bucket'
-              path : window.OSS_PATH.get 'path'
+              bucket : window.OSS_FILTER.get 'bucket'
+              path : window.OSS_FILTER.get 'path'
             }
             this.startUpload()
             self.setUploadStatus false
