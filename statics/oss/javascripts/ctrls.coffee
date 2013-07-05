@@ -1,23 +1,25 @@
 jQuery ($) ->
   Ctrls = Backbone.View.extend {
     events : 
-      'click .nextPage' : 'clickNextPage'
-      'click .prevPage' : 'clickPrevPage'
-      'click .invertSelection' : 'clickInvertSelection'
-      'click .attrGroup' : 'clickAttrGroup'
-      'click .remove' : 'clickRemove'
-    clickNextPage : (e) ->
-      if $(e.currentTarget).hasClass 'disabled'
+      'click .nextPage' : 'nextPage'
+      'click .prevPage' : 'prevPage'
+      'click .invertSelection' : 'invertSelection'
+      'click .attrGroup' : 'attrGroup'
+      'click .remove' : 'remove'
+    nextPage : ->
+      btn = @$el.find '.nextPage'
+      if btn.hasClass 'disabled'
         return
       window.OSS_PATH.nextPage()
-    clickPrevPage : (e) ->
-      if $(e.currentTarget).hasClass 'disabled'
+    prevPage : ->
+      btn = @$el.find '.prevPage'
+      if btn.hasClass 'disabled'
         return
       window.OSS_PATH.prevPage()
-    clickInvertSelection : ->
+    invertSelection : ->
       window.OBJ_COLLECTION.invertCheck()
 
-    clickAttrGroup : ->
+    attrGroup : ->
       resHeaders = [
         {
           name : 'Content-Language'
@@ -51,9 +53,9 @@ jQuery ($) ->
             data : 
               headers : result.headers
               objs : objs
-          }).success((res) ->
+          }).done((res) ->
             window.OSS_PATH.trigger 'refresh', window.OSS_PATH
-          ).error (res) ->
+          ).fail (res) ->
             console.dir 'headobjects fail!'
     getCheckObjs : (filterFolder) ->
       path = window.OSS_PATH.get 'path'
@@ -67,7 +69,7 @@ jQuery ($) ->
         else
           ''
       objs
-    clickRemove : ->
+    remove : ->
       userSelectCbf = (cbf) ->
         new JT.View.Alert {
           model : new JT.Model.Dialog {
@@ -97,9 +99,9 @@ jQuery ($) ->
             type : 'post'
             data :
               objs : objs
-          }).success((res) =>
+          }).done((res) =>
             window.OSS_PATH.trigger 'refresh', window.OSS_PATH
-          ).error (res) ->
+          ).fail (res) ->
             console.dir 'deleteobjects fail!'
 
     showPageBtn : (selector, hidden) ->
