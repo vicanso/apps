@@ -6,9 +6,22 @@ jQuery ($) ->
       'click .btns .search' : 'search'
     search : ->
       keyword = @$el.find('.searchContainer .keyword').val()
-      # window.OSS_PATH.set 'prefix', keyword
+      window.OSS_PATH.set 'markers', []
       window.OSS_PATH.set 'keyword', keyword
-
+      window.OSS_PATH.trigger 'getdata', window.OSS_PATH
+      # window.OSS_PATH.set 'keyword', keyword
+    initSearchEvent : ->
+      keywordObj = @$el.find '.keyword'
+      @$el.find('.advancedSearch :radio').change ->
+        obj = $ @
+        name = obj.attr 'name'
+        value = obj.attr 'data-value'
+        placeholder = obj.attr 'data-placeholder'
+        keywordObj.attr 'placeholder', placeholder
+        if name == 'path'
+          window.OSS_PATH.set 'delimiter', value
+        else
+          window.OSS_PATH.set 'searchType', value
     refresh : ->
       window.OSS_PATH.trigger 'refresh', window.OSS_PATH
     createFolder : ->
@@ -48,7 +61,7 @@ jQuery ($) ->
             path = path + folderName
             url = "/createfolder/#{window.OSS_PATH.get('bucket')}?path=#{path}"
             console.dir url
-            $.get(url).success ->
+            $.get(url).done ->
               window.OSS_PATH.trigger 'refresh', window.OSS_PATH
       ]
       # path = window.OSS_PATH.get('path') + '/'
@@ -98,6 +111,8 @@ jQuery ($) ->
           self.setUploadStatus true
           console.dir 'all complete'
       }
+
+      @initSearchEvent()
   }
   new ObjCtrls {
     el : $ '.objCtrlsContainer'

@@ -31,10 +31,11 @@ jQuery ($) ->
     pathHtmlArr.push '<a href="javascript:;" class="path active">' + lastPath + '</a>'
     pathsObj.html "当前位置：#{pathHtmlArr.join('')}"
 
-  ossPath.on 'change:path change:bucket change:prefix change:keyword', (model) ->
+  ossPath.on 'change:path change:bucket', (model) ->
     model.set 'markers', ''
     model.trigger 'getdata', model
     setPaths()
+  
     
   ossPath.on 'refresh', (model) ->
     markers = model.get 'markers'

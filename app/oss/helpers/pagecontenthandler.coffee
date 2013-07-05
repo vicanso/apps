@@ -51,22 +51,32 @@ pageContentHandler =
     ossClient = req.ossClient
     bucket = req.param 'bucket'
     prefix = req.param('prefix') || ''
-    keyword = req.param 'keyword'
+    searchType = req.param 'searchType'
+    # keyword = req.param 'keyword'
     marker = req.param 'marker'
+    delimiter = req.param 'delimiter' 
     globalSetting = req.session?.globalSetting
     maxKeys = 100
-    console.dir keyword
     if globalSetting
       eachPageSize = _.find globalSetting, (setting) ->
         setting.key == 'eachPageSize'
       if eachPageSize
         maxKeys = eachPageSize.value
-    if !keyword
-      ossClient.listObjects bucket, {prefix : prefix, delimiter : '/', marker : marker, 'max-keys' : maxKeys}, cbf
+    if !searchType || searchType == 'prefix'
+      ossClient.listObjects bucket, {prefix : prefix, delimiter : delimiter, marker : marker, 'max-keys' : maxKeys}, cbf
     else
-      filter = (objInfo) ->
-        ~objInfo.name.indexOf keyword
-      ossClient.listObjectsByCustom bucket, {prefix : prefix, marker : marker, 'max-keys' : maxKeys, max : maxKeys, filter : filter}, cbf
+      keyword = prefix
+      prefix = ''
+
+      query =
+        prefix : prefix
+        keyword : keyword
+        searchType : searchType
+        marker : marker
+        'max-keys' : maxKeys
+        max : maxKeys
+        delimiter : delimiter
+      ossClient.listObjectsByCustom bucket, query, cbf
   deleteObject : (req, res, cbf) ->
     cbf = wrapperCbf cbf
     ossClient = req.ossClient
@@ -80,14 +90,18 @@ pageContentHandler =
     data = req.body
     objs = data.objs
     if bucket && objs?.length
-      xmlArr = ['<?xml version="1.0" encoding="UTF-8"?><Delete><Quiet>true</Quiet>']
       _.each objs, (obj) ->
         len = obj.length
         if obj.charAt(len - 1) == '/'
           obj = obj.substring 0, len - 1
-        xmlArr.push "<Object><Key>#{obj}</Key></Object>"
-      xmlArr.push '</Delete>'
-      ossClient.deleteObjects bucket, xmlArr.join(''), cbf
+    #   xmlArr = ['<?xml version="1.0" encoding="UTF-8"?><Delete><Quiet>true</Quiet>']
+    #   _.each objs, (obj) ->
+    #     len = obj.length
+    #     if obj.charAt(len - 1) == '/'
+    #       obj = obj.substring 0, len - 1
+    #     xmlArr.push "<Object><Key>#{obj}</Key></Object>"
+    #   xmlArr.push '</Delete>'
+      ossClient.deleteObjects bucket, objs, cbf
     else
       cbf null
   createBucket : (req, res, cbf) ->

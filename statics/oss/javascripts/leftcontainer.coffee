@@ -1,8 +1,8 @@
 jQuery ($) ->
   LeftContainer = Backbone.View.extend {
     events : 
-      'click .opContainer .createBucket' : 'clickCreateBucket'
-      'click .opContainer .setting' : 'clickSetting'
+      'click .opContainer .createBucket' : 'createBucket'
+      'click .opContainer .setting' : 'setting'
     ###*
      * resize 浏览器窗口大小变化时调整
      * @return {[type]} [description]
@@ -11,7 +11,7 @@ jQuery ($) ->
       height = $(window).height()
       @$el.find('.bucketsContainer').height height - @resizeOffsetHeight
       @
-    clickCreateBucket : ->
+    createBucket : ->
       createBucketDlg = new JT.View.Alert {
         model : new JT.Model.Dialog {
           title : '创建bucket'
@@ -20,18 +20,18 @@ jQuery ($) ->
           btns : 
             '确定' : ($el) =>
               bucket = $el.find('.bucket').val()
-              $.get("/createbucket/#{bucket}").success( (res) =>
+              $.get("/createbucket/#{bucket}").done( (res) =>
                 @bucketCollection.add {
                   name : bucket
                 }
-              ).error () ->
+              ).fail () ->
                 console.dir 'fail'
             '取消' : ->
 
         }
       }
       @
-    clickSetting : ->
+    setting : ->
       window.SETTING.show()
       @
     ###*

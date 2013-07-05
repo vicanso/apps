@@ -4,8 +4,8 @@ jQuery ($) ->
     el : $ '#loginDialog'
     model : new JT.Model.Dialog {
       title : '登录OSS'
-      content : "<div class='inputItem'><span class='name'>Key ID:</span><input class='keyId' type='text' /></div>
-      <div class='inputItem'><span class='name'>Key Secret:</span><input class='keySecret' type='text' /></div>
+      content : "<div class='inputItem'><span class='name'>Key ID:</span><input class='keyId' type='text' value='Z8pQTAkCNNDAOPjt' /></div>
+      <div class='inputItem'><span class='name'>Key Secret:</span><input class='keySecret' type='text' value='z014NFAjKNLpvP07TSACKjNDgQDsqS'/></div>
       "
       modal : true
       destroyOnClose : false
@@ -20,9 +20,9 @@ jQuery ($) ->
               data : 
                 keyId : keyId
                 keySecret : keySecret
-            }).success(() ->
+            }).done(() ->
               window.location.reload()
-            ).error () ->
+            ).fail () ->
 
         '取消' : ->
     }
