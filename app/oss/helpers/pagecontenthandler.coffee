@@ -114,6 +114,8 @@ pageContentHandler =
     ossClient = req.ossClient
     data = req.body
     filePath = req.files.Filedata.path
+    console.dir filePath
+    console.dir data
     ossClient.putObject data.bucket, "#{data.path || ''}#{data.Filename}", filePath, (err, data) ->
       fs.unlink filePath
       cbf err, data

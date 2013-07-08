@@ -4,6 +4,10 @@ jQuery ($) ->
       'click .btns .createFolder' : 'createFolder'
       'click .btns .refresh' : 'refresh'
       'click .btns .search' : 'search'
+      'keyup .keyword' : 'userInput'
+    userInput : (e) ->
+      if e.keyCode == 0x0d
+        @search()
     search : ->
       keyword = @$el.find('.searchContainer .keyword').val()
       window.OSS_FILTER.set 'markers', []
@@ -76,6 +80,11 @@ jQuery ($) ->
         uploadSwfContainer.css('visibility', 'hidden').siblings('.jtBtn').addClass 'disabled'
     initialize : ->
       self = @
+      window.OSS_FILTER.on 'change:keyword', (model) =>
+        keyword = model.get 'keyword'
+        keywordObj = @$el.find '.searchContainer .keyword' 
+        if keyword != keywordObj.val()
+          keywordObj.val keyword
       @swfUpload = initSwfupload {
         file_queued_handler : (info) ->
           window.MSG_LIST.add {

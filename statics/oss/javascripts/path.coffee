@@ -32,7 +32,7 @@ jQuery ($) ->
     pathsObj.html "当前位置：#{pathHtmlArr.join('')}"
 
   ossFilter.on 'change:path change:bucket', (model) ->
-    model.set 'markers', ''
+    model.reset()
     model.trigger 'getdata', model
     setPaths()
   
@@ -66,6 +66,7 @@ jQuery ($) ->
           window.OBJ_COLLECTION.reset _.compact items
           setMarkers res.next
       error : ->
+        window.OBJ_COLLECTION.reset []
         console.dir 'oss path fetch fail!'
     }
   ossFilter.listenTo window.OBJ_COLLECTION, 'change:active', (objModel, value) ->

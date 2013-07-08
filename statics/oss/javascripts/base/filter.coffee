@@ -35,7 +35,7 @@ OSS.Model.Filter = Backbone.Model.extend {
   reset : ->
     @set 'prefix', ''
     @set 'keyword', ''
-    @set 'markers', []
+    @set 'markers', ''
     @set 'delimiter', '/'
 
   nextPage : ->
